@@ -1,10 +1,14 @@
 #include "VehiclePawn.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
+
+#include "GroundFollowComponent.h"
+#include "Components/PrimitiveComponent.h"
 
 AVehiclePawn::AVehiclePawn()
 {
@@ -21,6 +25,16 @@ AVehiclePawn::AVehiclePawn()
 
     DriverSeat = CreateDefaultSubobject<USceneComponent>(TEXT("DriverSeat"));
     DriverSeat->SetupAttachment(RootComponent);
+
+    GroundFollowComp = CreateDefaultSubobject<UGroundFollowComponent>(TEXT("GroundFollowComp"));
+
+    // 루트 충돌 세팅 예시(프로젝트 프로필에 맞게 조정)
+    // if (UPrimitiveComponent* Prim = Cast<UPrimitiveComponent>(GetRootComponent()))
+    // {
+    //     Prim->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    //     Prim->SetCollisionProfileName(TEXT("Pawn"));
+    //     Prim->SetSimulatePhysics(false); // 비물리 주행 모드 기본
+    // }
 
 }
 

@@ -28,21 +28,6 @@ void ASteelSurvivorCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
-    //매핑 컨텍스트 등록
-    // if (APlayerController* PC = Cast<APlayerController>(GetController()))
-    // {
-    //     if (ULocalPlayer* LP = PC->GetLocalPlayer())
-    //     {
-    //         if (UEnhancedInputLocalPlayerSubsystem* Subsys =
-    //             ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LP))
-    //         {
-    //             if (IMC_Player)
-    //             {
-    //                 Subsys->AddMappingContext(IMC_Player, /*Priority=*/0);
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 void ASteelSurvivorCharacter::PossessedBy(AController* NewController)
@@ -108,6 +93,12 @@ void ASteelSurvivorCharacter::Move(const FInputActionValue& Value)
 
         AddMovementInput(ForwardDir, InputVec.Y);
         AddMovementInput(RightDir,   InputVec.X);
+
+        auto* CMC = GetCharacterMovement();
+        CMC->SetPlaneConstraintEnabled(false);   // XY 강제 평면 금지 (FloorCheck 깨질 수 있음)
+        CMC->MaxStepHeight = 45.f;
+        CMC->SetWalkableFloorAngle(46.f);
+        CMC->PerchAdditionalHeight = 20.f;
     }
 }
 

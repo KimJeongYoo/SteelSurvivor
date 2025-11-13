@@ -74,4 +74,21 @@ protected:
     // IMC 전환을 안전하게 하려면 PossessedBy/UnPossessed도 오버라이드 가능
     virtual void PossessedBy(AController* NewController) override;
     virtual void UnPossessed() override;
+
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // float RideHeight = 10.f;              // 차 바닥과 지면 간 유지 간격(차종에 맞게 조절)
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // float TraceUp = 80.f;                  // 위로 여유 (차가 튀어오를 때)
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // float TraceDown = 200.f;               // 아래로 탐색 길이 (내리막/낙차 대응)
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // float ZInterpSpeed = 6.f;             // Z 위치 보정 속도(부드럽게)
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // float RotInterpSpeed = 4.f;            // 회전(Pitch/Roll) 보정 속도
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // float MaxWalkableSlopeDeg = 50.f;      // 올라갈 수 있는 최대 경사(지면 정규와 Up 벡터 각도)
+    // UPROPERTY(EditAnywhere, Category="GroundFollow")
+    // bool  bAlignToGroundNormal = true;     // 지면 노멀에 따라 기울이기
+
+    // void ApplyGroundFollow(float DeltaTime);
 };

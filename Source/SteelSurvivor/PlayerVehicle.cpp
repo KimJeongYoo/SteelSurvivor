@@ -120,6 +120,9 @@ void APlayerVehicle::Tick(float DeltaTime)
     AddActorWorldOffset(MoveVec, true);
     AddActorLocalRotation(FRotator(0.f, YawDelta, 0.f));
 
+    // === 지면 추종(Z 및 Pitch/Roll 보정) ===
+    // ApplyGroundFollow(DeltaTime);
+
     // 자연 감속
     CurrentSpeed = FMath::FInterpTo(CurrentSpeed, 0.f, DeltaTime, 1.0f);
 }
@@ -143,3 +146,70 @@ void APlayerVehicle::Turn(const FInputActionValue& Value)
 {
     SteeringInput = Value.Get<float>();
 }
+
+// void APlayerVehicle::ApplyGroundFollow(float DeltaTime)
+// {
+//     UWorld* World = GetWorld();
+//     if (!World) return;
+
+//     const FVector ActorLoc = GetActorLocation();
+//     const FVector Up = FVector::UpVector;
+
+//     const FVector TraceStart = ActorLoc + Up * TraceUp;
+//     const FVector TraceEnd   = ActorLoc - Up * TraceDown;
+
+//     FHitResult Hit;
+//     FCollisionQueryParams Params(SCENE_QUERY_STAT(PlayerVehicle_FloorTrace), false, this);
+
+//     // 지면 트레이스(Visibility 또는 WorldStatic 사용)
+//     const bool bHit = World->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, Params);
+//     // DrawDebugLine(World, TraceStart, TraceEnd, bHit ? FColor::Green : FColor::Red, false, 0.f, 0, 1.f);
+
+//     if (!bHit)
+//     {
+//         // 지면을 못 찾으면 천천히 아래로 끌어내려 낙하 느낌(원하면 중력값 더)
+//         const float FallSpeed = 300.f;
+//         AddActorWorldOffset(-Up * FallSpeed * DeltaTime, true);
+//         return;
+//     }
+
+//     const FVector GroundNormal = Hit.ImpactNormal.GetSafeNormal();
+//     const float SlopeDeg = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(GroundNormal, Up)));
+
+//     // 너무 가파르면(계단이나 벽) 붙지 않고 슬라이드/회피
+//     if (SlopeDeg > MaxWalkableSlopeDeg)
+//     {
+//         // 살짝 위로 들어 올려서 끼임 방지(옵션)
+//         AddActorWorldOffset(Up * 2.f, true);
+//         return;
+//     }
+
+//     // === Z 위치 보정: 지면 + RideHeight ===
+//     const float TargetZ = Hit.ImpactPoint.Z + RideHeight;
+//     FVector TargetLoc = ActorLoc;
+//     TargetLoc.Z = FMath::FInterpTo(ActorLoc.Z, TargetZ, DeltaTime, ZInterpSpeed);
+
+//     // 스윕해서 위치 이동(끼임 방지)
+//     SetActorLocation(TargetLoc, /*bSweep=*/true);
+
+//     // === 회전(Pitch/Roll) 지면 정렬 ===
+//     if (bAlignToGroundNormal)
+//     {
+//         // 전진 방향을 지면 위로 투영해 "앞"을 유지
+//         const FVector Fwd = GetActorForwardVector();
+//         FVector FwdOnPlane = (Fwd - FVector::DotProduct(Fwd, GroundNormal) * GroundNormal).GetSafeNormal();
+//         if (FwdOnPlane.IsNearlyZero())
+//         {
+//             FwdOnPlane = Fwd; // 예외 처리
+//         }
+
+//         const FRotator DesiredRot = FRotationMatrix::MakeFromXZ(FwdOnPlane, GroundNormal).Rotator();
+
+//         // Yaw는 우리가 이미 조향했으니 Pitch/Roll만 부드럽게 보정
+//         FRotator Current = GetActorRotation();
+//         FRotator Target  = FRotator(DesiredRot.Pitch, Current.Yaw, DesiredRot.Roll);
+
+//         const FRotator NewRot = FMath::RInterpTo(Current, Target, DeltaTime, RotInterpSpeed);
+//         SetActorRotation(NewRot);
+//     }
+// }

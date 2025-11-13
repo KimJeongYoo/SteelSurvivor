@@ -8,6 +8,7 @@ class USceneComponent;
 class USkeletalMeshComponent;
 class ACharacter;
 class AController;
+class UGroundFollowComponent;
 
 UCLASS()
 class STEELSURVIVOR_API AVehiclePawn : public ABasePawn
@@ -42,4 +43,7 @@ protected:
 
     UPROPERTY()
     ACharacter* SeatedChar = nullptr;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+    UGroundFollowComponent* GroundFollowComp;
 };
