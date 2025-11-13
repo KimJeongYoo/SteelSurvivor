@@ -20,19 +20,21 @@ public:
 
     /** 차 바닥과 지면 간 유지 간격 */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="GroundFollow")
-    float RideHeight = 20.f;
+    float RideHeight = 10.f;
 
-    /** 위/아래 트레이스 길이 */
+    /** 위로 여유 (차 튀어오를때) */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="GroundFollow")
     float TraceUp = 80.f;
 
+	/** 아래로 탐색 길이 (내리막/낙차) */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="GroundFollow")
     float TraceDown = 200.f;
 
-    /** 보정 속도 */
+    /** Z 위치 보정 속도 */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="GroundFollow")
-    float ZInterpSpeed = 10.f;
+    float ZInterpSpeed = 7.f;
 
+	/** 회전(Pitch/Roll) 보정 속도 */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="GroundFollow")
     float RotInterpSpeed = 6.f;
 

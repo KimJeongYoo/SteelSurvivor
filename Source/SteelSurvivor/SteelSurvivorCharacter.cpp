@@ -13,6 +13,7 @@ ASteelSurvivorCharacter::ASteelSurvivorCharacter()
     PrimaryActorTick.bCanEverTick = true;
 
     // 1인칭용 회전 설정
+    bUseControllerRotationPitch = true;
     bUseControllerRotationYaw = true;
     GetCharacterMovement()->bOrientRotationToMovement = false;
     GetCharacterMovement()->MaxWalkSpeed = 500.f;
@@ -22,6 +23,7 @@ ASteelSurvivorCharacter::ASteelSurvivorCharacter()
 	FirstPersonCamera->SetupAttachment(RootComponent);
     FirstPersonCamera->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); // 눈높이 정도
     FirstPersonCamera->bUsePawnControlRotation = true;
+    
 }
 
 void ASteelSurvivorCharacter::BeginPlay()
@@ -107,7 +109,7 @@ void ASteelSurvivorCharacter::Look(const FInputActionValue& Value)
     const FVector2D LookVec = Value.Get<FVector2D>();
 
     AddControllerYawInput(LookVec.X * YawSensitivity);
-    AddControllerPitchInput(LookVec.Y * PitchSensitivity);
+    AddControllerPitchInput(LookVec.Y * PitchSensitivity); //Roll Scale 60%
 }
 
 
