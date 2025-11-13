@@ -48,26 +48,22 @@ bool AVehiclePawn::EnterVehicle(ACharacter* Char, AController* Ctrl)
     Capsule->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
     // 2) 좌석 월드 TM 미리 얻고, 먼저 맞춤
-    UE_LOG(LogTemp, Warning, TEXT("EnterVehicle: Before SetActorTransform"));
     const FTransform SeatTM = DriverSeat->GetComponentTransform();
     Char->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     Char->SetActorTransform(SeatTM, false, nullptr, ETeleportType::TeleportPhysics);
 
     // 3) KeepWorld로 부착 (여기서 끝)
-    UE_LOG(LogTemp, Warning, TEXT("EnterVehicle: Before Attach"));
     Char->AttachToComponent(DriverSeat, FAttachmentTransformRules::KeepWorldTransform);
 
     if (APlayerController* PC = Cast<APlayerController>(Ctrl))
     {
-        Char->DisableInput(PC);                    // 입력 잠깐 차단
+        // Char->DisableInput(PC);                    // 입력 잠깐 차단
         PC->SetControlRotation(GetActorRotation()); // 시점 정렬(옵션)
     }
 
-    UE_LOG(LogTemp, Warning, TEXT("EnterVehicle: Before Possess"));
     Ctrl->Possess(this); // ← 여기서 멈춘다면 2)~3)은 OK, 소유권 전환/IMC 쪽 문제
     SeatedChar = Char;   // ← 이제 GC에 안전 (UPROPERTY 덕분)
 
-    UE_LOG(LogTemp, Warning, TEXT("EnterVehicle: Done"));
     return true;
 }
 
@@ -82,7 +78,7 @@ bool AVehiclePawn::ExitVehicle()
     // 하차 위치(끼임 방지 약간 보정)
     const FVector ExitLoc =
         GetActorLocation()
-      + GetActorRightVector() * -120.f
+      + GetActorRightVector() * -200.f
       + GetActorForwardVector() * 40.f
       + FVector(0, 0, 110.f);
     const FRotator ExitRot = GetActorRotation();

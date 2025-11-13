@@ -1,0 +1,26 @@
+[
+	{
+		"file": "E:\\Projects\\UnrealEngine5\\Unreal Projects\\SteelSurvivor\\SteelSurvivor\\Source\\SteelSurvivor\\SteelSurvivor.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Projects\\UnrealEngine5\\Unreal Projects\\SteelSurvivor\\SteelSurvivor\\.vscode\\compileCommands_SteelSurvivor\\SteelSurvivor.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Projects\\UnrealEngine5\\Unreal Projects\\SteelSurvivor\\SteelSurvivor\\Source\\SteelSurvivor\\SteelSurvivor.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Projects\\UnrealEngine5\\Unreal Projects\\SteelSurvivor\\SteelSurvivor\\.vscode\\compileCommands_SteelSurvivor\\SteelSurvivor.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Projects\\UnrealEngine5\\Unreal Projects\\SteelSurvivor\\SteelSurvivor\\Source\\SteelSurvivor\\SteelSurvivor.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Projects\\UnrealEngine5\\Unreal Projects\\SteelSurvivor\\SteelSurvivor\\.vscode\\compileCommands_SteelSurvivor\\SteelSurvivor.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	}
+]

@@ -59,4 +59,8 @@ protected:
 
     UPROPERTY(EditAnywhere, Category="Interact")
     float EnterSweepRadius = 60.f;
+
+    // IMC 전환을 안전하게 하려면 PossessedBy/UnPossessed도 오버라이드 가능
+    virtual void PossessedBy(AController* NewController) override;
+    virtual void UnPossessed() override;
 };

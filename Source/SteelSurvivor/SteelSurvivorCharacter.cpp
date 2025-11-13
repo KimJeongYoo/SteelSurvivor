@@ -29,21 +29,46 @@ void ASteelSurvivorCharacter::BeginPlay()
     Super::BeginPlay();
 
     //매핑 컨텍스트 등록
-    if (APlayerController* PC = Cast<APlayerController>(GetController()))
+    // if (APlayerController* PC = Cast<APlayerController>(GetController()))
+    // {
+    //     if (ULocalPlayer* LP = PC->GetLocalPlayer())
+    //     {
+    //         if (UEnhancedInputLocalPlayerSubsystem* Subsys =
+    //             ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LP))
+    //         {
+    //             if (IMC_Player)
+    //             {
+    //                 Subsys->AddMappingContext(IMC_Player, /*Priority=*/0);
+    //             }
+    //         }
+    //     }
+    // }
+}
+
+void ASteelSurvivorCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    if (APlayerController* PC = Cast<APlayerController>(NewController))
+    if (ULocalPlayer* LP = PC->GetLocalPlayer())
+    if (auto* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LP))
     {
-        if (ULocalPlayer* LP = PC->GetLocalPlayer())
-        {
-            if (UEnhancedInputLocalPlayerSubsystem* Subsys =
-                ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LP))
-            {
-                if (IMC_Player)
-                {
-                    Subsys->AddMappingContext(IMC_Player, /*Priority=*/0);
-                }
-            }
-        }
+        Sub->ClearAllMappings();
+        if (IMC_Player) Sub->AddMappingContext(IMC_Player, 0);
     }
 }
+
+void ASteelSurvivorCharacter::UnPossessed()
+{
+    if (APlayerController* PC = Cast<APlayerController>(GetController()))
+    if (ULocalPlayer* LP = PC->GetLocalPlayer())
+    if (auto* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LP))
+    {
+        Sub->RemoveMappingContext(IMC_Player);
+    }
+    Super::UnPossessed();
+}
+
 
 void ASteelSurvivorCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
