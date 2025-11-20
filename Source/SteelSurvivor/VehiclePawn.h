@@ -30,13 +30,13 @@ public:
 
     virtual void BeginPlay() override;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+    USkeletalMeshComponent* VehicleBodyMesh;
+
 protected:
     // 파생(APlayerVehicle)에서도 접근 필요할 수 있어 protected로
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
     USceneComponent* Root;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
-    USkeletalMeshComponent* VehicleBodyMesh;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
     USceneComponent* WheelControlPoint;

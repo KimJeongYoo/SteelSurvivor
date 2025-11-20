@@ -97,9 +97,6 @@ void ASteelSurvivorCharacter::ToggleBuildMode()
 {
     if (BuildTool)
         BuildTool->ToggleBuildMode();
-
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TEXT("ToggleBuild Pressed"));
 }
 
 void ASteelSurvivorCharacter::ConfirmBuild()

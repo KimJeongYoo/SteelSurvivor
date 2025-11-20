@@ -195,6 +195,7 @@ void UPlatformGridComponent::TestGridDrawing()
     USceneComponent* PlatformOrigin = GetAttachParent();
     if (!PlatformOrigin || !GetWorld()) 
     {
+
         return;
     }
 

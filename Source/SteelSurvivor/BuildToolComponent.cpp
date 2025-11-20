@@ -6,7 +6,8 @@
 
 #include "PlatformGridComponent.h"
 #include "BuildableBase.h"
-#include "PlayerVehicle.h"           // APlayerVehicle 선언 헤더 이름에 맞게
+#include "PlayerVehicle.h"
+#include "VehiclePawn.h"
 
 UBuildToolComponent::UBuildToolComponent()
 {
@@ -126,6 +127,8 @@ void UBuildToolComponent::UpdatePreview()
     PreviewX = GX;
     PreviewY = GY;
 
+    FRotator PlatformRotator = CurrentGrid->GetComponentRotation();
+
     if (!PreviewActor)
     {
         if (!FloorClass) return;
@@ -137,7 +140,7 @@ void UBuildToolComponent::UpdatePreview()
         PreviewActor = GetWorld()->SpawnActor<ABuildableBase>(
             FloorClass,
             CellPos,
-            FRotator::ZeroRotator,
+            PlatformRotator,
             SpawnParams);
 
         if (PreviewActor)
@@ -173,11 +176,19 @@ void UBuildToolComponent::ConfirmBuild()
     SpawnParams.SpawnCollisionHandlingOverride =
         ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
+    FRotator PlatformRotator = CurrentGrid->GetComponentRotation();
+
     ABuildableBase* NewFloor = GetWorld()->SpawnActor<ABuildableBase>(
         FloorClass,
         SpawnLoc,
-        FRotator::ZeroRotator,
+        PlatformRotator,
         SpawnParams);
+
+    AVehiclePawn* Pawn = Cast<AVehiclePawn>(CurrentGrid->GetOwner());
+    USkeletalMeshComponent* BodyMesh = Pawn->VehicleBodyMesh;
+    NewFloor->AttachToComponent(BodyMesh, FAttachmentTransformRules::KeepWorldTransform);
+    
+    
 
     if (NewFloor)
     {
