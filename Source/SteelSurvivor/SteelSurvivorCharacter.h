@@ -8,6 +8,7 @@
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UBuildToolComponent;
 
 UCLASS()
 class STEELSURVIVOR_API ASteelSurvivorCharacter : public ACharacter
@@ -19,6 +20,12 @@ public:
 
     virtual void BeginPlay() override;
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Build")
+    UBuildToolComponent* BuildTool;
+
+    void ToggleBuildMode();
+    void ConfirmBuild();
 
 protected:
     // === 1인칭 카메라 ===
@@ -37,6 +44,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
     UInputAction* IA_EnterVehicle; // E키 같은 디지털 액션
+
+    //임의로
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+    UInputAction* IA_BuildMode; // B키
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+    UInputAction* IA_BuildConfirm; // 좌클릭키
 
     // === 입력 처리 함수 ===
     void Move(const FInputActionValue& Value);

@@ -3,6 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "BuildToolComponent.h"
 
 // Enhanced Input
 #include "EnhancedInputComponent.h"
@@ -24,6 +25,7 @@ ASteelSurvivorCharacter::ASteelSurvivorCharacter()
     FirstPersonCamera->SetRelativeLocation(FVector(0.f, 0.f, 64.f)); // 눈높이 정도
     FirstPersonCamera->bUsePawnControlRotation = true;
     
+    BuildTool = CreateDefaultSubobject<UBuildToolComponent>(TEXT("BuildTool"));
 }
 
 void ASteelSurvivorCharacter::BeginPlay()
@@ -78,7 +80,32 @@ void ASteelSurvivorCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		{
 			EIC->BindAction(IA_EnterVehicle, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::TryEnterNearestVehicle);
 		}
+
+        if (IA_BuildMode)
+        {
+            EIC->BindAction(IA_BuildMode, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::ToggleBuildMode);
+        }
+
+        if (IA_BuildConfirm)
+        {
+            EIC->BindAction(IA_BuildConfirm, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::ConfirmBuild);
+        }
     }
+}
+
+void ASteelSurvivorCharacter::ToggleBuildMode()
+{
+    if (BuildTool)
+        BuildTool->ToggleBuildMode();
+
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TEXT("ToggleBuild Pressed"));
+}
+
+void ASteelSurvivorCharacter::ConfirmBuild()
+{
+    if (BuildTool)
+        BuildTool->ConfirmBuild();
 }
 
 void ASteelSurvivorCharacter::Move(const FInputActionValue& Value)

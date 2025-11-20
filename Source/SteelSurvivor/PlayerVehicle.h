@@ -9,6 +9,8 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
+class UPlatformGridComponent;
+class USceneComponent;
 
 UCLASS()
 class STEELSURVIVOR_API APlayerVehicle : public AVehiclePawn
@@ -21,6 +23,12 @@ public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Platform")
+    USceneComponent* PlatformOrigin;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Platform")
+    UPlatformGridComponent* PlatformGrid;
 
 	// UPROPERTY() ACharacter* StoredCharacter = nullptr; //원래 탑승자 캐릭터 기억
 

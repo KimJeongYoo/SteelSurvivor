@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Engine/LocalPlayer.h"
 #include "InputActionValue.h"
+#include "PlatformGridComponent.h"
 
 APlayerVehicle::APlayerVehicle()
 {
@@ -18,6 +19,16 @@ APlayerVehicle::APlayerVehicle()
 
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     Camera->SetupAttachment(RootComponent);
+
+    PlatformOrigin = CreateDefaultSubobject<USceneComponent>(TEXT("PlatformOrigin"));
+    PlatformOrigin->SetupAttachment(VehicleBodyMesh);
+    // 트럭 플랫폼 중앙쯤으로 로컬 위치 맞춰주기 (에디터에서 조정해도 됨)
+    PlatformOrigin->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+
+    PlatformGrid = CreateDefaultSubobject<UPlatformGridComponent>(TEXT("PlatformGrid"));
+    PlatformGrid->SetupAttachment(PlatformOrigin);
+
+    // PlatformGrid->PlatformOrigin = PlatformOrigin;
 }
 
 void APlayerVehicle::BeginPlay()
