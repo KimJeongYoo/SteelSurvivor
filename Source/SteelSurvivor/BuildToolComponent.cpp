@@ -187,8 +187,6 @@ void UBuildToolComponent::ConfirmBuild()
     AVehiclePawn* Pawn = Cast<AVehiclePawn>(CurrentGrid->GetOwner());
     USkeletalMeshComponent* BodyMesh = Pawn->VehicleBodyMesh;
     NewFloor->AttachToComponent(BodyMesh, FAttachmentTransformRules::KeepWorldTransform);
-    
-    
 
     if (NewFloor)
     {

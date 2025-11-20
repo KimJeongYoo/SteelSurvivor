@@ -28,14 +28,6 @@ AVehiclePawn::AVehiclePawn()
 
     GroundFollowComp = CreateDefaultSubobject<UGroundFollowComponent>(TEXT("GroundFollowComp"));
 
-    // 루트 충돌 세팅 예시(프로젝트 프로필에 맞게 조정)
-    // if (UPrimitiveComponent* Prim = Cast<UPrimitiveComponent>(GetRootComponent()))
-    // {
-    //     Prim->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    //     Prim->SetCollisionProfileName(TEXT("Pawn"));
-    //     Prim->SetSimulatePhysics(false); // 비물리 주행 모드 기본
-    // }
-
 }
 
 void AVehiclePawn::BeginPlay()
@@ -90,16 +82,20 @@ bool AVehiclePawn::ExitVehicle()
     if (!PC) return false;
 
     // 하차 위치(끼임 방지 약간 보정)
-    const FVector ExitLoc =
-        GetActorLocation()
-      + GetActorRightVector() * -200.f
-      + GetActorForwardVector() * 40.f
-      + FVector(0, 0, 110.f);
-    const FRotator ExitRot = GetActorRotation();
+    // const FVector ExitLoc =
+    //     GetActorLocation()
+    //   + GetActorRightVector() * -200.f
+    //   + GetActorForwardVector() * 40.f
+    //   + FVector(0, 0, 110.f);
+    // const FRotator ExitRot = GetActorRotation();
+
+    FRotator ExitRot = GetActorRotation();
+    ExitRot.Roll = 0.0f;
 
     // 분리 및 위치 세팅
     SeatedChar->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-    SeatedChar->SetActorLocationAndRotation(ExitLoc, ExitRot, false, nullptr, ETeleportType::TeleportPhysics);
+    SeatedChar->SetActorRotation(ExitRot);
+    // SeatedChar->SetActorLocationAndRotation(ExitLoc, ExitRot, false, nullptr, ETeleportType::TeleportPhysics);
 
     // 충돌/이동 복구
     if (UCapsuleComponent* Capsule = SeatedChar->GetCapsuleComponent())

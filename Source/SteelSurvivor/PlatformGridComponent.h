@@ -33,9 +33,6 @@ public:
     // **추가:** 디버그 드로잉을 위한 테스트 함수 선언
     void TestGridDrawing();
 
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    // USceneComponent* PlatformOrigin;
-
     // 최대 폭: 좌우 5칸
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Grid")
     int32 MaxWidth = 5;          // Y 방향 (좌우)
