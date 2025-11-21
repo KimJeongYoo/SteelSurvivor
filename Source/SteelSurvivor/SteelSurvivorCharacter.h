@@ -1,9 +1,13 @@
 #pragma once
 
+#include "InventoryComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "SteelSurvivorCharacter.generated.h"
+
+
 
 class UCameraComponent;
 class UInputMappingContext;
@@ -27,6 +31,28 @@ public:
     void ToggleBuildMode();
     void ConfirmBuild();
 
+
+    // 인벤토리 컴포넌트
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Inventory")
+    UInventoryComponent* InventoryComp;
+
+    // 인벤토리 위젯
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+    TSubclassOf<UUserWidget> InventoryWidgetClass;
+
+    UPROPERTY()
+    UUserWidget* InventoryWidget;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Inventory")
+    bool bInventoryOpen = false;
+
+    // 인벤토리 토글 함수
+    UFUNCTION()
+    void ToggleInventory();
+
+    // 숫자키로 퀵바 선택 (1~9)
+    void SelectHotbarIndex(int32 Index);
+
 protected:
     // === 1인칭 카메라 ===
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
@@ -43,7 +69,7 @@ protected:
     UInputAction* IA_Look;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
-    UInputAction* IA_EnterVehicle; // E키 같은 디지털 액션
+    UInputAction* IA_EnterVehicle; // F키 같은 디지털 액션
 
     //임의로
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
@@ -51,6 +77,15 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
     UInputAction* IA_BuildConfirm; // 좌클릭키
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+    UInputAction* IA_ToggleInventory; // E
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+    UInputAction* IA_SelectSlot1; // 1
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+    UInputAction* IA_SelectSlot2; // 2
 
     // === 입력 처리 함수 ===
     void Move(const FInputActionValue& Value);

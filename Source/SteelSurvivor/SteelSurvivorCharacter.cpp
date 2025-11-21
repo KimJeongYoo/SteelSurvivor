@@ -26,12 +26,26 @@ ASteelSurvivorCharacter::ASteelSurvivorCharacter()
     FirstPersonCamera->bUsePawnControlRotation = true;
     
     BuildTool = CreateDefaultSubobject<UBuildToolComponent>(TEXT("BuildTool"));
+    InventoryComp = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComp"));
 }
 
 void ASteelSurvivorCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
+    // 인벤토리 위젯 생성
+    if (InventoryWidgetClass)
+    {
+        if (APlayerController* PC = Cast<APlayerController>(GetController()))
+        {
+            InventoryWidget = CreateWidget<UUserWidget>(PC, InventoryWidgetClass);
+            if (InventoryWidget)
+            {
+                InventoryWidget->AddToViewport();
+                InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+            }
+        }
+    }
 }
 
 void ASteelSurvivorCharacter::PossessedBy(AController* NewController)
@@ -89,6 +103,21 @@ void ASteelSurvivorCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
         if (IA_BuildConfirm)
         {
             EIC->BindAction(IA_BuildConfirm, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::ConfirmBuild);
+        }
+
+        if (IA_ToggleInventory)
+        {
+            EIC->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::ToggleInventory);
+        }
+
+        if (IA_SelectSlot1)
+        {
+            EIC->BindAction(IA_SelectSlot1, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::SelectHotbarIndex, 0);
+        }
+
+        if (IA_SelectSlot2)
+        {
+            EIC->BindAction(IA_SelectSlot2, ETriggerEvent::Started, this, &ASteelSurvivorCharacter::SelectHotbarIndex, 1);
         }
     }
 }
@@ -175,4 +204,48 @@ void ASteelSurvivorCharacter::TryEnterNearestVehicle()
 
     if (GEngine)
         GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("No vehicle or EnterVehicle failed"));
+}
+
+void ASteelSurvivorCharacter::ToggleInventory()
+{
+    bInventoryOpen = !bInventoryOpen;
+
+    if (APlayerController* PC = Cast<APlayerController>(GetController()))
+    {
+        if (bInventoryOpen)
+        {
+            PC->SetShowMouseCursor(true);
+            PC->SetInputMode(FInputModeGameAndUI());
+
+            if (InventoryWidget)
+            {
+                UE_LOG(LogTemp, Display, TEXT("InventoryWidget is exist"));
+                InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+            }
+        }
+        else
+        {
+            PC->SetShowMouseCursor(false);
+            PC->SetInputMode(FInputModeGameOnly());
+
+            if (InventoryWidget)
+            {
+                InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+            }
+        }
+    }
+}
+
+void ASteelSurvivorCharacter::SelectHotbarIndex(int32 Index)
+{
+    if (!InventoryComp) return;
+
+    InventoryComp->SetActiveHotbarIndex(Index);
+
+    // 망치 장비 상태에 따라 BuildMode 토글
+    if (BuildTool)
+    {
+        const bool bHasHammer = InventoryComp->HasEquippedHammer();
+        BuildTool->SetBuildMode(bHasHammer);
+    }
 }
